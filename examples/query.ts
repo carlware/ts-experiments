@@ -1,17 +1,4 @@
-interface QueryField {
-    key: string
-    value?: string
-}
-
 type Query = string
-type QueryString = () => string
-
-const Agregator = (key:string, value?:string) : QueryString => {
-    return (): string =>{
-        if (value) return `${key}=${value}`
-        return ""
-    }
-}
 
 const QueryBuiler = (params: object) : Query => {
     let query: Query = ""
@@ -28,6 +15,4 @@ const Params = {
     f: 'f',
 }
 
-for (let key of Object.keys(Params)) {
-    console.log(key, Params[key])
-}
+console.log(QueryBuiler(Params))
