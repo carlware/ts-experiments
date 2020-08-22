@@ -1,18 +1,22 @@
-var Agregator = function (key, value) {
-    return function () {
-        if (value)
-            return key + "=" + value;
-        return "";
-    };
-};
-var QueryBuiler = function (params) {
+var QueryBuiler = function (exclusion) {
+    if (exclusion === void 0) { exclusion = []; }
+    var objects = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        objects[_i - 1] = arguments[_i];
+    }
     var query = "";
-    for (var _i = 0, _a = Object.keys(params); _i < _a.length; _i++) {
-        var key = _a[_i];
-        if (query !== "")
-            query += "&";
-        if (params[key] !== undefined && params[key] !== null)
-            query += key + "=" + params[key];
+    for (var _a = 0, objects_1 = objects; _a < objects_1.length; _a++) {
+        var obj = objects_1[_a];
+        for (var _b = 0, _c = Object.keys(obj); _b < _c.length; _b++) {
+            var key = _c[_b];
+            if (query !== "")
+                query += "&";
+            if (obj[key] !== undefined &&
+                obj[key] !== null &&
+                obj[key] !== '' &&
+                exclusion.indexOf(key) === -1)
+                query += key + "=" + obj[key];
+        }
     }
     return query;
 };
@@ -21,4 +25,9 @@ var Params = {
     b: 2,
     f: 'f'
 };
-console.log(QueryBuiler(Params));
+var Pagination = {
+    start: 10,
+    limit: 10
+};
+console.log(QueryBuiler([], Params, Pagination));
+console.log(['x'].indexOf('x') !== -1);

@@ -1,10 +1,15 @@
 type Query = string
 
-const QueryBuiler = (params: object) : Query => {
+const QueryBuiler = (exclusion=[], ...objects: object[]) : Query => {
     let query: Query = ""
-    for (let key of Object.keys(params)) {
+    for (let obj of objects) {
+    for (let key of Object.keys(obj)) {
         if (query !== "" ) query += "&"
-        if(params[key] !== undefined && params[key] !== null) query += `${key}=${params[key]}`
+        if(obj[key] !== undefined && 
+            obj[key] !== null && 
+            obj[key] !== '' &&
+            exclusion.indexOf(key) === -1) query += `${key}=${obj[key]}`
+    }
     }
     return query
 }
@@ -15,4 +20,10 @@ const Params = {
     f: 'f',
 }
 
-console.log(QueryBuiler(Params))
+const Pagination = {
+    start: 10,
+    limit: 10,
+}
+
+console.log(QueryBuiler([],Params, Pagination))
+console.log(['x'].indexOf('x') !== -1)
